@@ -189,8 +189,8 @@ void body() {
 	while(!accept(')')) {
 		uint8_t a = string();
 		uint8_t b = element();
-		uint8_t c = token();
-		if(!a && !b && !c) {
+//		uint8_t c = token();
+		if(!a && !b /*&& !c*/) {
 			return;
 		}
 	}
@@ -224,8 +224,6 @@ uint8_t isempty(char *e) {
 	return 0;
 }
 	
-			
-	
 uint8_t element() {
 	if(!accept('(')) {
 		return 0;
@@ -233,14 +231,12 @@ uint8_t element() {
 	fprintf(out, "<");
 	char buf[32] = {0};
 	stoken(buf);
-	if(isempty(buf)) {
-		while(next() != ')');
-		fprintf(out, ">");
-		return 1;
-	}
 	attrs();
 	classes();
 	fprintf(out, ">");
+	if(isempty(buf)) {
+		return 1;
+	}
 	body();
 	fprintf(out, "</%s>", buf);
 	return 1;
