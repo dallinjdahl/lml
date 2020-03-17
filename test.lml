@@ -1,0 +1,5 @@
+(p [bg-black font-width-lg]
+	"beginning of paragraph"
+	(a {href: "https://google.com" onclick: null} "my link") //commented out
+	(br)
+	"end of paragraph")
