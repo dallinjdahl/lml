@@ -216,7 +216,6 @@ uint8_t isempty(char *e) {
 
 	for(uint8_t i = 0; i < 15; i++) {
 		if(streql(e, empties[i])) {
-fprintf(stderr, "%s\t%s\n", e, empties[i]);
 			return 1;
 		}
 	}
@@ -233,7 +232,6 @@ uint8_t element() {
 	char buf[32] = {0};
 	stoken(buf);
 	if(isempty(buf)) {
-fprintf(stderr, "here\n");
 		while(next() != ')');
 		fprintf(out, ">");
 		return 1;
@@ -276,6 +274,10 @@ int main(int argc, char ** argv) {
 	in = stdin;
 	out = stdout;
 	if(argc > 1) {
+		if (streql("-h", argv[1])) {
+			printf("Usage:\tlml\n\tlml <input.lml>\n");
+			return 0;
+		}
 		in = fopen(argv[1], "r");
 		out = fopen(npath(argv[1]), "w");
 	}
