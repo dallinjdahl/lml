@@ -149,7 +149,7 @@ uint8_t tag() {
 	}
 	pos--;
 	if(!accept(':')) {
-		error("tag");
+		return 0;
 	}
 	fprintf(out, "=\"");
 	return 1;
@@ -161,11 +161,12 @@ void attrs() {
 	}
 	while(!accept('}')) {
 		fprintf(out, " ");
-		tag();
-		if(!string()) {
-			token();
+		if(tag()) {
+			if(!string()) {
+				token();
+			}
+			fprintf(out, "\"");
 		}
-		fprintf(out, "\"");
 	}
 }
 
