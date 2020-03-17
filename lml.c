@@ -189,7 +189,8 @@ void body() {
 	while(!accept(')')) {
 		uint8_t a = string();
 		uint8_t b = element();
-		if(!a && !b) {
+		uint8_t c = token();
+		if(!a && !b && !c) {
 			return;
 		}
 	}
