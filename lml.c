@@ -109,11 +109,11 @@ uint8_t string() {
 
 uint8_t token() {
 	char c = eatspace();
-	if(strchr("]})", c)) {
+	if(strchr("({[]})", c)) {
 		pos--;
 		return 0;
 	}
-	while(!isspace(c) && !strchr("]})", c)) {
+	while(!isspace(c) && !strchr("({[]})", c)) {
 		fprintf(out, "%c", c);
 		c = next();
 	}
@@ -123,11 +123,11 @@ uint8_t token() {
 
 uint8_t stoken(char *s) {
 	char c = eatspace();
-	if(strchr("]})", c)) {
+	if(strchr("({[]})", c)) {
 		pos--;
 		return 0;
 	}
-	while(!isspace(c) && !strchr("]})", c)) {
+	while(!isspace(c) && !strchr("({[]})", c)) {
 		*(s++) = c;
 		fprintf(out, "%c", c);
 		c = next();
@@ -186,11 +186,11 @@ void classes() {
 uint8_t element();
 
 void body() {
-	while(!accept(')')) {
+	while(1) {
 		uint8_t a = string();
 		uint8_t b = element();
-//		uint8_t c = token();
-		if(!a && !b /*&& !c*/) {
+		uint8_t c = token();
+		if(!a && !b && !c) {
 			return;
 		}
 	}
@@ -235,9 +235,15 @@ uint8_t element() {
 	classes();
 	fprintf(out, ">");
 	if(isempty(buf)) {
+		if(!accept(')')) {
+			return 0;
+		}
 		return 1;
 	}
 	body();
+	if(!accept(')')) {
+		return 0;
+	}
 	fprintf(out, "</%s>", buf);
 	return 1;
 }
