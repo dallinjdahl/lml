@@ -109,11 +109,11 @@ uint8_t string() {
 
 uint8_t token() {
 	char c = eatspace();
-	if(strchr("({[]})", c)) {
+	if(strchr("({[]})\"", c)) {
 		pos--;
 		return 0;
 	}
-	while(!isspace(c) && !strchr("({[]})", c)) {
+	while(!isspace(c) && !strchr("({[]})\"", c)) {
 		fprintf(out, "%c", c);
 		c = next();
 	}
@@ -123,11 +123,11 @@ uint8_t token() {
 
 uint8_t stoken(char *s) {
 	char c = eatspace();
-	if(strchr("({[]})", c)) {
+	if(strchr("({[]})\"", c)) {
 		pos--;
 		return 0;
 	}
-	while(!isspace(c) && !strchr("({[]})", c)) {
+	while(!isspace(c) && !strchr("({[]})\"", c)) {
 		*(s++) = c;
 		fprintf(out, "%c", c);
 		c = next();
