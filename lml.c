@@ -210,6 +210,19 @@ uint8_t streql(char *s, char *t) {
 	return 1;
 }
 
+uint8_t iswhole(char *e) {
+	char *wholes[11] = { "a","th","td","i",
+						"b","p","h1","h2",
+						"h3","h4","h5"};
+
+	for(uint8_t i = 0; i < 11; i++) {
+		if(streql(e, wholes[i])) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 uint8_t isempty(char *e) {
 	char *empties[15] = { "area","base","br","col",
 						"embed","hr","img","input",
@@ -223,10 +236,20 @@ uint8_t isempty(char *e) {
 	}
 	return 0;
 }
-	
+
+int indent = 0;
+uint8_t whole = 0;
 uint8_t element() {
+	uint8_t setwhole = 0;
 	if(!accept('(')) {
 		return 0;
+	}
+	if(!whole) {
+		fprintf(out, "\n");
+		for(int j = 0; j < indent; j++) {
+			fprintf(out, "  ");
+		}
+		indent++;
 	}
 	fprintf(out, "<");
 	char buf[32] = {0};
@@ -235,14 +258,30 @@ uint8_t element() {
 	classes();
 	fprintf(out, ">");
 	if(isempty(buf)) {
+		indent--;
 		if(!accept(')')) {
 			return 0;
 		}
 		return 1;
 	}
+	if(!whole) {
+		whole = iswhole(buf);
+		setwhole = whole;
+	}
 	body();
 	if(!accept(')')) {
 		return 0;
+	}
+	if(!whole) {
+		indent--;
+		fprintf(out, "\n");
+		for(int j = 0; j < indent; j++) {
+			fprintf(out, "  ");
+		}
+	}
+	if(setwhole) {
+		whole = 0;
+		indent--;
 	}
 	fprintf(out, "</%s>", buf);
 	return 1;
