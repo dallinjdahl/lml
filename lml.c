@@ -211,11 +211,11 @@ uint8_t streql(char *s, char *t) {
 }
 
 uint8_t iswhole(char *e) {
-	char *wholes[11] = { "a","th","td","i",
+	char *wholes[12] = { "a","th","td","i",
 						"b","p","h1","h2",
-						"h3","h4","h5"};
+						"h3","h4","h5", "title"};
 
-	for(uint8_t i = 0; i < 11; i++) {
+	for(uint8_t i = 0; i < 12; i++) {
 		if(streql(e, wholes[i])) {
 			return 1;
 		}
